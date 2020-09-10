@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   entry: {
     app: './src/index.js',
+    assets: './src/assets/assets.js'
   },
   output: {
     filename: '[name].js',
@@ -24,7 +25,18 @@ module.exports = {
           'style-loader',
           MiniCssExtractPlugin.loader,
           'css-loader',
-          'postcss-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [
+                  [
+                    'autoprefixer',
+                  ],
+                ],
+              },
+            },
+          },
           'sass-loader'
         ]
       },
