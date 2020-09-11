@@ -24,20 +24,21 @@ module.exports = {
         use: [
           'style-loader',
           MiniCssExtractPlugin.loader,
-          'css-loader',
+          {
+            loader: 'css-loader',
+            options: {sourceMap: true}
+          },
           {
             loader: 'postcss-loader',
             options: {
-              postcssOptions: {
-                plugins: [
-                  [
-                    'autoprefixer',
-                  ],
-                ],
-              },
+              sourceMap: true,
+              config: { path: './postcss.config.js'}
             },
           },
-          'sass-loader'
+          {
+            loader: 'sass-loader',
+            options: {sourceMap: true}
+          },
         ]
       },
       {
@@ -58,17 +59,17 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].css'
+      filename: 'assets/css/[name].[hash].css'
     }),
     new CleanWebpackPlugin({cleanStaleWebpackAssets: false ,}),
     new HtmlWebpackPlugin ({
       hash: false,
-      filename: 'index.html',
+      filename: './index.html',
       template: './src/index.html',
     }),
     new HtmlWebpackPlugin ({
       hash: false,
-      filename: 'assets/assets.html',
+      filename: './pages/assets.html',
       template: './src/assets/assets.html',
     }),
   ],
