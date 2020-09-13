@@ -1,3 +1,5 @@
 import './index.scss'
 
-console.log('Success')
+let success = () => console.log('Success');
+
+success();

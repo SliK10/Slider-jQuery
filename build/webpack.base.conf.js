@@ -2,23 +2,35 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+const PATHS = {
+  src: path.join(__dirname, '../src'),
+  dist: path.join(__dirname, '../dist'),
+  assets: 'assets/'
+}
 
 module.exports = {
+  externals: {
+    paths: PATHS
+  },
   entry: {
-    app: './src/index.js',
-    assets: './src/assets/assets.js'
+    app: PATHS.src,
+    assets: `${PATHS.src}/assets/assets.js`
   },
   output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, './dist'),
+    filename: `${PATHS.assets}js/[name].js`,
+    path: PATHS.dist,
     publicPath: '/'
   },
-  devServer: {
-    overlay: true,
-    port: 8081
-  },
+  devtool: 'source-map',
   module: {
     rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        exclude: '/node_modules/'
+      },
       {
         test: /\.scss$/,
         use: [
@@ -43,9 +55,10 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        use: [
-          'file-loader',
-        ]
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]'
+          }
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -59,13 +72,18 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'assets/css/[name].[hash].css'
+      filename: `${PATHS.assets}css/[name].css`
     }),
+    // new CopyWebpackPlugin({
+    //   patterns: [
+    //     { from: `${PATHS.src}/img`, to: `${PATHS.assets}img` }
+    //   ]
+    // }),
     new CleanWebpackPlugin({cleanStaleWebpackAssets: false ,}),
     new HtmlWebpackPlugin ({
       hash: false,
       filename: './index.html',
-      template: './src/index.html',
+      template: `${PATHS.src}/index.html`,
     }),
     new HtmlWebpackPlugin ({
       hash: false,
