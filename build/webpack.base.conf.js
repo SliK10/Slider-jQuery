@@ -16,7 +16,7 @@ module.exports = {
   },
   entry: {
     app: PATHS.src,
-    assets: `${PATHS.src}/assets/assets.js`
+    assets: `${PATHS.src}/assets/assets.ts`
   },
   output: {
     filename: `${PATHS.assets}js/[name].[hash].js`,
@@ -28,6 +28,11 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
+        exclude: '/node_modules/'
+      },
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader',
         exclude: '/node_modules/'
       },
       {
