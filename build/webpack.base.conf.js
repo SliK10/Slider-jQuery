@@ -19,11 +19,10 @@ module.exports = {
     assets: `${PATHS.src}/assets/assets.js`
   },
   output: {
-    filename: `${PATHS.assets}js/[name].js`,
+    filename: `${PATHS.assets}js/[name].[hash].js`,
     path: PATHS.dist,
     publicPath: '/'
   },
-  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -72,7 +71,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: `${PATHS.assets}css/[name].css`
+      filename: `${PATHS.assets}css/[name].[hash].css`
     }),
     // new CopyWebpackPlugin({
     //   patterns: [
@@ -81,14 +80,16 @@ module.exports = {
     // }),
     new CleanWebpackPlugin({cleanStaleWebpackAssets: false ,}),
     new HtmlWebpackPlugin ({
-      hash: false,
       filename: './index.html',
       template: `${PATHS.src}/index.html`,
+      inject: true,
+      chunks: ['app']
     }),
     new HtmlWebpackPlugin ({
-      hash: false,
       filename: './pages/assets.html',
       template: './src/assets/assets.html',
+      inject: true,
+      chunks: ['assets']
     }),
   ],
 }
