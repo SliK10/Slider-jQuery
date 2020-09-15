@@ -8,15 +8,15 @@ const PATHS = {
   src: path.join(__dirname, '../src'),
   dist: path.join(__dirname, '../dist'),
   assets: 'assets/'
-}
+};
 
 module.exports = {
   externals: {
     paths: PATHS
   },
   entry: {
-    app: PATHS.src,
-    assets: `${PATHS.src}/assets/assets.ts`
+    app: `${PATHS.src}/index.ts`,
+    assets: `${PATHS.src}/assets/assets.ts`,
   },
   output: {
     filename: `${PATHS.assets}js/[name].[hash].js`,
@@ -27,7 +27,7 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        loader: 'babel-loader',
+        use: ['babel-loader', 'eslint-loader'],
         exclude: '/node_modules/'
       },
       {
@@ -59,10 +59,10 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]'
-          }
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+        },
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -97,4 +97,4 @@ module.exports = {
       chunks: ['assets']
     }),
   ],
-}
+};

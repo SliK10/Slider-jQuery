@@ -1,6 +1,5 @@
-import './assets.scss'
+import './assets.scss';
 
+const num: number = 54;
 
-let num: number = 54;
-
-console.log(num)
+console.log(num);

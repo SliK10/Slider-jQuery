@@ -1,0 +1,21 @@
+{
+  "plugins": [
+    "@typescript-eslint",
+    "fsd"
+  ],
+  "extends": [
+    "airbnb-base",
+    "plugin:fsd/all"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "tsconfig.json",
+    "tsconfigRootDir": "."
+  },
+  "env": {
+    "es6": true,
+    "es2017": true,
+    "browser": true
+  },
+  "rules": {}
+}
