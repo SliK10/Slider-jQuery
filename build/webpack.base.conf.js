@@ -2,38 +2,37 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+// const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const PATHS = {
   src: path.join(__dirname, '../src'),
   dist: path.join(__dirname, '../dist'),
-  assets: 'assets/'
+  assets: 'assets/',
 };
 
 module.exports = {
   externals: {
-    paths: PATHS
+    paths: PATHS,
   },
   entry: {
     app: `${PATHS.src}/index.ts`,
-    assets: `${PATHS.src}/assets/assets.ts`,
   },
   output: {
     filename: `${PATHS.assets}js/[name].[hash].js`,
     path: PATHS.dist,
-    publicPath: '/'
+    publicPath: '/',
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         use: ['babel-loader', 'eslint-loader'],
-        exclude: '/node_modules/'
+        exclude: '/node_modules/',
       },
       {
         test: /\.ts$/,
         loader: 'ts-loader',
-        exclude: '/node_modules/'
+        exclude: '/node_modules/',
       },
       {
         test: /\.scss$/,
@@ -42,20 +41,20 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
-            options: {sourceMap: true}
+            options: { sourceMap: true },
           },
           {
             loader: 'postcss-loader',
             options: {
               sourceMap: true,
-              config: { path: './postcss.config.js'}
+              config: { path: './postcss.config.js' },
             },
           },
           {
             loader: 'sass-loader',
-            options: {sourceMap: true}
+            options: { sourceMap: true },
           },
-        ]
+        ],
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
@@ -69,32 +68,32 @@ module.exports = {
         use: [
           {
             loader: 'file-loader',
-          }
+          },
         ],
       },
-    ]
+    ],
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: `${PATHS.assets}css/[name].[hash].css`
+      filename: `${PATHS.assets}css/[name].[hash].css`,
     }),
     // new CopyWebpackPlugin({
     //   patterns: [
     //     { from: `${PATHS.src}/img`, to: `${PATHS.assets}img` }
     //   ]
     // }),
-    new CleanWebpackPlugin({cleanStaleWebpackAssets: false ,}),
-    new HtmlWebpackPlugin ({
+    new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
+    new HtmlWebpackPlugin({
       filename: './index.html',
       template: `${PATHS.src}/index.html`,
       inject: true,
-      chunks: ['app']
+      chunks: ['app'],
     }),
-    new HtmlWebpackPlugin ({
-      filename: './pages/assets.html',
-      template: './src/assets/assets.html',
-      inject: true,
-      chunks: ['assets']
-    }),
+    // new HtmlWebpackPlugin ({
+    //   filename: './pages/assets.html',
+    //   template: './src/assets/assets.html',
+    //   inject: true,
+    //   chunks: ['assets'],
+    // }),
   ],
 };

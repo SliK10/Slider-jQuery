@@ -15,7 +15,8 @@
   "env": {
     "es6": true,
     "es2017": true,
-    "browser": true
+    "browser": true,
+    "jest": true
   },
   "rules": {}
 }

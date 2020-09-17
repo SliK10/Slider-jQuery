@@ -5,7 +5,7 @@ const buildWebpackConfig = merge(baseWebpackConfig, {
   // BUILD settings gonna be here
   mode: 'production',
 
-  plugins: []
+  plugins: [],
 });
 
 // export buildWebpackConfig

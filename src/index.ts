@@ -1,16 +1,14 @@
-import './index.scss'
+import './index.scss';
 
-interface User {
-  name: string;
-  id: number;
+function sum(a: number, b: number) {
+  console.log(a);
+  console.log(b);
+  console.log(a + b);
+  return a + b;
 }
 
-const user: User = {
-  name: 'Helga',
-  id: 0,
-};
+sum(1, 2);
 
-// console.log(JSON.stringify(user));
-
-// console.log('Name of user: ' + user.name);
-// console.log('Id user: ' + user.id);
+const people: string = 'ПРИВЕТ РЕБЯТА ВСЕМ НА СВЯЗИ ЁПСТУДЕЙ КАК МАЛО НА ЗЕМЛЕ ПОРЯДОЧЫХ ЛЮДЕЙ';
+console.log(people);
+module.exports = sum;
