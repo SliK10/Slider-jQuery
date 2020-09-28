@@ -1,4 +1,16 @@
-h1 {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  color: green;
+.slider {
+  width: 300px;
+  height: 10px;
+  background-color: lightgray;
+  z-index: 1;
+
+  &__thumb {
+    width: 15px;
+    height: 16px;
+    background-color: green;
+    z-index: 2;
+    position: relative;
+    top: -3px;
+    left: 1px;
+  }
 }
