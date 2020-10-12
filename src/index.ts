@@ -1,56 +1,29 @@
 import './index.scss';
 
-class Slider {
-  classElem: string;
+const thumb: HTMLElement = document.querySelector('.slider__thumb');
+const slider: HTMLElement = document.querySelector('.slider');
 
-  elem: HTMLElement;
+thumb.onmousedown = function (event: MouseEvent) {
+  const shiftX = event.clientX - thumb.getBoundingClientRect().left;
+  function moveAt(event: MouseEvent) {
+    const sliderBorderLeft = slider.getBoundingClientRect().left;
+    const sliderWidth = slider.getBoundingClientRect().right - sliderBorderLeft;
+    const thumbWidth = thumb.getBoundingClientRect().right - thumb.getBoundingClientRect().left;
+    const eventBorderLeft = event.clientX - sliderBorderLeft - shiftX;
 
-  shiftX: number;
 
-  shiftY: number;
-
-  constructor(name: string) {
-    this.classElem = name;
-    this.elem;
-    this.shiftX;
-    this.shiftY;
+    console.log(sliderWidth - thumbWidth)
+    if (eventBorderLeft >= 0 && eventBorderLeft <= 286) {
+      thumb.style.left = `${(event.clientX - sliderBorderLeft - shiftX)}px`;
+    }
   }
 
-  sliderInit() {
-    this.elem = document.querySelector(this.classElem);
-    this.elem.addEventListener('mousedown', this.dragAndDrop.bind(this));
-    this.elem.ondragstart = () => false;
-  }
+  // moveAt(event);
 
-  dragAndDrop(event: MouseEvent) {
-    this.shiftX = event.clientX - this.elem.getBoundingClientRect().left;
-    this.shiftY = event.clientY;
+  document.addEventListener('mousemove', moveAt);
 
-    this.elem.style.position = 'absolute';
-    this.elem.style.zIndex = '1000';
-    // document.body.append(this.elem);
-
-    document.addEventListener('mousemove', this.onMouseMove.bind(this));
-    console.log('======');
-    document.addEventListener('mouseup', this.removeListener.bind(this));
-  }
-
-  onMouseMove(event: MouseEvent) {
-    this.moveAt(event.pageX);
-  }
-
-  moveAt(pageX: number) {
-    this.elem.style.left = `${pageX - this.shiftX}px`;
-    this.elem.style.top = `${this.shiftY}px`;
-  }
-
-  removeListener() {
-    document.removeEventListener('mousemove', this.onMouseMove);
-    this.elem.addEventListener('mouseup', null);
-    console.log('событие отработало');
-  }
-}
-
-const mySlidr = new Slider('.slider__thumb');
-
-mySlidr.sliderInit();
+  document.onmouseup = function () {
+    document.removeEventListener('mousemove', moveAt);
+    document.onmouseup = null;
+  };
+};

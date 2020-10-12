@@ -1,16 +1,22 @@
+html {
+  height: 3000px;
+}
+
 .slider {
   width: 300px;
   height: 10px;
+  margin: 10px;
   background-color: lightgray;
-  z-index: 1;
+  position: relative;
 
   &__thumb {
-    width: 15px;
+    width: 14px;
     height: 16px;
+    position: relative;
     background-color: green;
     z-index: 2;
-    position: relative;
     top: -3px;
-    left: 1px;
+    left: 0px;
+    opacity: .2;
   }
 }
