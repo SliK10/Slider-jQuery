@@ -8,9 +8,11 @@ thumb.onmousedown = function (event: MouseEvent) {
   function moveAt(event: MouseEvent) {
     const sliderBorderLeft = slider.getBoundingClientRect().left;
     const eventBorderLeft = event.pageX - sliderBorderLeft - shiftX;
+    const eventFrameWidth = event.view.frames.outerWidth;
 
-    console.log(eventBorderLeft);
-    console.log(event);
+    if (event.clientX >= eventFrameWidth) {
+      return;
+    }
     if (eventBorderLeft >= 0 && eventBorderLeft <= 286) {
       thumb.style.left = `${(eventBorderLeft)}px`;
     } else if (eventBorderLeft > 286) {
