@@ -1,15 +1,36 @@
-interface SliderParam {
+import './subView/thumb.ts';
+
+interface LineParam {
   width: number;
   element: HTMLElement;
   sliderBorderLeft: number;
 }
 
+interface ThumbParam {
+  element: HTMLElement;
+  width: number;
+}
+
+interface SliderParameters {
+  double: boolean;
+  min: number;
+  max: number;
+  orientation: string;
+  interval: number;
+  tickMarks: boolean;
+  value: number;
+  values: [number, number];
+  progressBar: boolean;
+}
+
 class View {
-  slider: SliderParam;
+  sliderParam: SliderParameters;
+
+  lineParam: LineParam;
 
   container: NodeListOf<HTMLElement>;
 
-  thumb: HTMLElement;
+  thumb: ThumbParam;
 
   shiftX: number;
 
@@ -21,13 +42,26 @@ class View {
 
   constructor() {
     this.container = null;
-
-    this.slider = {
+    this.sliderParam = {
+      double: null,
+      min: null,
+      max: null,
+      orientation: null,
+      interval: null,
+      tickMarks: null,
+      value: null,
+      values: null,
+      progressBar: null,
+    };
+    this.lineParam = {
       width: null,
       element: null,
       sliderBorderLeft: null,
     };
-    this.thumb = null;
+    this.thumb = {
+      element: null,
+      width: null,
+    };
     this.shiftX = null;
 
     this.moveAt = this.moveAt.bind(this);
@@ -35,13 +69,15 @@ class View {
     this.mouseUp = this.mouseUp.bind(this);
   }
 
-  sliderInit(initDiv: string) {
-    this.container = document.querySelectorAll(initDiv);
-
+  sliderInit(initDiv: SliderParameters) {
+    this.container = document.querySelectorAll('.range-slider');
+    this.sliderParam = initDiv;
     for (let i = 0; i < this.container.length; i += 1) {
       this.container[i].innerHTML = `
         <div class="slider">
-          <div class="slider__thumb"></div>
+          <div class="slider__line">
+            ${}
+          </div>
         </div>`;
     }
     document.addEventListener('mousedown', this.mouseDown.bind(this));
@@ -51,10 +87,16 @@ class View {
     const target = (<HTMLElement>event.target);
 
     if (target.classList.contains('slider__thumb')) {
-      this.thumb = target;
-      this.slider.element = this.thumb.parentElement;
 
-      this.shiftX = event.clientX - this.thumb.getBoundingClientRect().left;
+      // ===== Start ======
+      this.thumb.element = target;
+      const thumbWidth = (getComputedStyle(this.thumb.element));
+      console.log(parseFloat(thumbWidth.width));
+      this.thumb.width = parseFloat(thumbWidth.width);
+      this.lineParam.element = this.thumb.element.parentElement;
+      this.lineParam.width = parseFloat(getComputedStyle(this.lineParam.element).width);
+      // ===== End =====
+      this.shiftX = event.clientX - this.thumb.element.getBoundingClientRect().left;
 
       document.addEventListener('mousemove', this.moveAt);
 
@@ -63,10 +105,13 @@ class View {
   }
 
   moveAt(event: MouseEvent): void {
-    this.slider.sliderBorderLeft = this.slider.element.getBoundingClientRect().left;
-    this.eventBorderLeft = event.clientX - this.slider.sliderBorderLeft - this.shiftX;
+    this.lineParam.sliderBorderLeft = this.lineParam.element.getBoundingClientRect().left;
+    this.eventBorderLeft = event.clientX - this.lineParam.sliderBorderLeft - this.shiftX;
     this.eventFrameWidth = event.view.frames.innerWidth;
     this.eventFrameHeight = event.view.frames.innerHeight;
+
+    console.log(this.lineParam.width);
+    let maxWidthEvent = this.lineParam.width - this.thumb.width;
 
     if (event.clientX >= this.eventFrameWidth) {
       return;
@@ -74,12 +119,12 @@ class View {
     if (event.clientY >= this.eventFrameHeight || event.clientY <= 0) {
       return;
     }
-    if (this.eventBorderLeft >= 0 && this.eventBorderLeft <= 286) {
-      this.thumb.style.left = `${(this.eventBorderLeft)}px`;
-    } else if (this.eventBorderLeft > 286) {
-      this.thumb.style.left = `${286}px`;
+    if (this.eventBorderLeft >= 0 && this.eventBorderLeft <= maxWidthEvent) {
+      this.thumb.element.style.left = `${(this.eventBorderLeft)}px`;
+    } else if (this.eventBorderLeft > maxWidthEvent) {
+      this.thumb.element.style.left = `${maxWidthEvent}px`;
     } else if (this.eventBorderLeft < 0) {
-      this.thumb.style.left = `${0}px`;
+      this.thumb.element.style.left = `${0}px`;
     }
   }
 
@@ -89,6 +134,6 @@ class View {
   }
 }
 
-const slider = new View();
+// const slider = new View();
 
-slider.sliderInit('.range-slider');
+// slider.sliderInit();
